@@ -1,0 +1,168 @@
+﻿@page "/users/{userId}"
+
+@using BlazingAuth.Permissions.Sample.Shared.Requests
+@using BlazingAuth.Permissions.Sample.Shared.Responses
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using BlazingAuth.Permissions.Sample.Shared
+@using System.Diagnostics.CodeAnalysis
+
+@attribute [AuthorizePermission(AppPermissions.ViewAllUsers)]
+@inject HttpClient Http
+
+<PageTitle>User</PageTitle>
+
+<h1>User</h1>
+
+<p>Here are the details of @user?.UserName</p>
+
+@if (user is null || permissions is null)
+{
+    @if (!isForbidden)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <p><em>You don't have the required permissions to access this resource.</em></p>
+    }
+}
+else
+{
+    <dl>
+        <dt>Id</dt>
+        <dd>@user.Id</dd>
+
+        <dt>UserName</dt>
+        <dd>@user.UserName</dd>
+        
+        <dt>Email</dt>
+        <dd>@user.Email</dd>
+
+        <dt>EmailConfirmed</dt>
+        <dd>@user.EmailConfirmed</dd>
+    </dl>
+
+    <div class="row">
+
+        <div class="col-auto">
+            <input type="text" class="form-control" @bind="PermissionToAdd" />
+        </div>
+
+        <div class="col-auto">
+            <AuthorizePermissionView AndPermissions="@AppPermissions.ManagePermissions">
+                <Authorized>
+                    <button class="btn btn-primary mb-3" @onclick="OnAdd">Add permission</button>
+                </Authorized>
+                <NotAuthorized>
+                    <button class="btn btn-primary mb-3" disabled>Add permission</button>
+                </NotAuthorized>
+            </AuthorizePermissionView>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Permission</th>
+                    <th>Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var perm in permissions)
+                {
+                    <tr>
+                        <td>@perm</td>
+                        <td>
+                            <AuthorizePermissionView AndPermissions="@AppPermissions.ManagePermissions">
+                                <Authorized>
+                                    <button class="btn btn-danger mb-3" @onclick="@(async () => await OnDelete(perm))">Remove</button>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <button class="btn btn-danger mb-3" disabled>Remove</button>
+                                </NotAuthorized>
+                            </AuthorizePermissionView>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@code {
+    [Inject, AllowNull]
+    private ILogger<UserInfo> logger { get; set; }
+
+    [Parameter, AllowNull]
+    public string UserId { get; set; }
+
+    [Parameter, AllowNull]
+    public string PermissionToAdd { get; set; } = "";
+
+    private User? user;
+    private IEnumerable<string>? permissions;
+    private bool isForbidden = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            user = await Http.GetFromJsonAsync<User>($"admin/users/{UserId}");
+            await LoadPermissions();
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            isForbidden = true;
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    private async Task LoadPermissions()
+    {
+        permissions = await Http.GetFromJsonAsync<IEnumerable<string>>($"admin/users/{UserId}/permissions");
+    }
+
+    private async Task OnAdd()
+    {
+        try
+        {
+            await Http.PostAsJsonAsync<PermissionRequest>($"admin/users/{UserId}/permissions",
+                new PermissionRequest() { Permission = PermissionToAdd });
+
+            await LoadPermissions();
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            logger.LogCritical("Couldn't add permission to user: Forbidden.");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    private async Task OnDelete(string permission)
+    {
+        try
+        {
+            await Http.DeleteAsync($"admin/users/{UserId}/permissions/{permission}");
+
+            await LoadPermissions();
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            logger.LogCritical("Couldn't remove permission to user: Forbidden.");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

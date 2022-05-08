@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingAuth.Permissions.Client", "BlazingAuth.Permissions.Client\BlazingAuth.Permissions.Client.csproj", "{851D1E1A-23CF-47C8-8522-4347CD058099}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingAuth.Permissions", "BlazingAuth.Permissions\BlazingAuth.Permissions.csproj", "{3723E818-1509-49AB-9F9B-771CB90F937D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingAuth.Permissions.Server", "BlazingAuth.Permissions.Server\BlazingAuth.Permissions.Server.csproj", "{BB2652E5-39E0-42A2-90C2-DBA13DC02C72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{27BD1879-CAFF-4FCC-8277-514AB9E2AABD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingAuth.Permissions.Sample.Server", "Samples\BlazingAuth.Permissions.Sample\Server\BlazingAuth.Permissions.Sample.Server.csproj", "{9170AD0E-C95C-4F9A-B617-C5956D2722B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingAuth.Permissions.Sample.Client", "Samples\BlazingAuth.Permissions.Sample\Client\BlazingAuth.Permissions.Sample.Client.csproj", "{E4002F25-A47C-4ABA-B848-D46EEE89B53A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingAuth.Permissions.Sample.Shared", "Samples\BlazingAuth.Permissions.Sample\Shared\BlazingAuth.Permissions.Sample.Shared.csproj", "{FD411544-A659-4190-B0EF-B002BCFA891C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{851D1E1A-23CF-47C8-8522-4347CD058099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851D1E1A-23CF-47C8-8522-4347CD058099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851D1E1A-23CF-47C8-8522-4347CD058099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851D1E1A-23CF-47C8-8522-4347CD058099}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3723E818-1509-49AB-9F9B-771CB90F937D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3723E818-1509-49AB-9F9B-771CB90F937D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3723E818-1509-49AB-9F9B-771CB90F937D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3723E818-1509-49AB-9F9B-771CB90F937D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB2652E5-39E0-42A2-90C2-DBA13DC02C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB2652E5-39E0-42A2-90C2-DBA13DC02C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB2652E5-39E0-42A2-90C2-DBA13DC02C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB2652E5-39E0-42A2-90C2-DBA13DC02C72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9170AD0E-C95C-4F9A-B617-C5956D2722B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9170AD0E-C95C-4F9A-B617-C5956D2722B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9170AD0E-C95C-4F9A-B617-C5956D2722B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9170AD0E-C95C-4F9A-B617-C5956D2722B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4002F25-A47C-4ABA-B848-D46EEE89B53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4002F25-A47C-4ABA-B848-D46EEE89B53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4002F25-A47C-4ABA-B848-D46EEE89B53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4002F25-A47C-4ABA-B848-D46EEE89B53A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD411544-A659-4190-B0EF-B002BCFA891C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD411544-A659-4190-B0EF-B002BCFA891C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD411544-A659-4190-B0EF-B002BCFA891C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD411544-A659-4190-B0EF-B002BCFA891C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9170AD0E-C95C-4F9A-B617-C5956D2722B6} = {27BD1879-CAFF-4FCC-8277-514AB9E2AABD}
+		{E4002F25-A47C-4ABA-B848-D46EEE89B53A} = {27BD1879-CAFF-4FCC-8277-514AB9E2AABD}
+		{FD411544-A659-4190-B0EF-B002BCFA891C} = {27BD1879-CAFF-4FCC-8277-514AB9E2AABD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF3E7F37-B512-407A-9B13-C8674832E084}
+	EndGlobalSection
+EndGlobal

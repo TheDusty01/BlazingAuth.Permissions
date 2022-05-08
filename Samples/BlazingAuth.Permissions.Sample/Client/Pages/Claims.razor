@@ -1,0 +1,50 @@
+﻿@page "/claims"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using BlazingAuth.Permissions.Sample.Shared.Responses
+@using System.Security.Claims
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Claims</PageTitle>
+
+<h1>Claims</h1>
+
+<p>Show all claims.</p>
+
+@if (claims == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in claims)
+            {
+                <tr>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Claim[]? claims;
+
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationState;
+        claims = state.User.Claims.ToArray();
+    }
+}

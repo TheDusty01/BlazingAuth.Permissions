@@ -1,0 +1,74 @@
+﻿@page "/users"
+
+@using BlazingAuth.Permissions.Sample.Shared.Responses
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using BlazingAuth.Permissions.Sample.Shared
+
+@attribute [AuthorizePermission(AppPermissions.ViewAllUsers)]
+@inject HttpClient Http
+
+<PageTitle>Users</PageTitle>
+
+<h1>Users</h1>
+
+<p>Here is a list of all users</p>
+
+@if (users is null)
+{
+    @if (!isForbidden)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <p><em>You don't have the required permissions to access this resource.</em></p>
+    }
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Is Email confirmed?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>
+                        <a href="/users/@user.Id">@user.Id</a>
+                    </td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.EmailConfirmed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private User[]? users;
+    private bool isForbidden = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            users = await Http.GetFromJsonAsync<User[]>("admin/users");
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            isForbidden = true;
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

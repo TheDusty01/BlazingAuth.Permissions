@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>BlazingAuth.Permissions.Sample.Server-7257E020-83F8-483C-B404-6F1204DEA5FE</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="BlazingAuth.db" />
+    <None Remove="BlazingAuth.sqlite" />
+    <None Remove="BlazingAuth.sqlite-shm" />
+    <None Remove="BlazingAuth.sqlite-wal" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BlazingAuth.Permissions.Server\BlazingAuth.Permissions.Server.csproj" />
+    <ProjectReference Include="..\..\..\BlazingAuth.Permissions\BlazingAuth.Permissions.csproj" />
+    <ProjectReference Include="..\Client\BlazingAuth.Permissions.Sample.Client.csproj" />
+    <ProjectReference Include="..\Shared\BlazingAuth.Permissions.Sample.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
+</Project>
