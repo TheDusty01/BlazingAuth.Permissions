@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace BlazingAuth.Permissions.Server
+namespace BlazingAuth.Permissions.Server;
+
+public class AuthorizePermissionAttribute : TypeFilterAttribute
 {
-    public class AuthorizePermissionAttribute : TypeFilterAttribute
+    public AuthorizePermissionAttribute(params string[] orPermissons) : base(typeof(PermissionAuthorizationFilter))
     {
-        public AuthorizePermissionAttribute(params string[] orPermissons) : base(typeof(PermissionAuthorizationFilter))
-        {
-            Arguments = new object[] { orPermissons };
-        }
+        Arguments = new object[] { orPermissons };
     }
 }

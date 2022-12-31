@@ -1,14 +1,13 @@
-﻿using BlazingAuth.Permissions.Requirements;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using BlazingAuth.Permissions.Requirements;
 
-namespace BlazingAuth.Permissions
+namespace BlazingAuth.Permissions;
+
+public class BlazingAuthPolicies
 {
-    public class BlazingAuthPolicies
-    {
-        public const string Permission = nameof(Permission);
-        public static AuthorizationPolicy PermissionPolicy => new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .AddRequirements(new PermissionAuthorizationRequirement())
-            .Build();
-    }
+    public const string Permission = nameof(Permission);
+    public static AuthorizationPolicy PermissionPolicy => new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .AddRequirements(new PermissionAuthorizationRequirement())
+        .Build();
 }

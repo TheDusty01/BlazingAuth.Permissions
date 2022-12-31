@@ -4,6 +4,7 @@ using BlazingAuth.Permissions.Sample.Shared;
 using BlazingAuth.Permissions.Sample.Shared.Requests;
 using BlazingAuth.Permissions.Sample.Shared.Responses;
 using BlazingAuth.Permissions.Server;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Security.Claims;
 
 namespace BlazingAuth.Permissions.Sample.Server.Controllers
 {
+    [AuthorizePermission(AppPermissions.ViewAllUsers)]
     [Route("[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -40,7 +42,7 @@ namespace BlazingAuth.Permissions.Sample.Server.Controllers
         [HttpGet("users")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await dbContext.Users.Select(x => new User(x.Id, x.UserName, x.Email, x.EmailConfirmed))
+            var users = await dbContext.Users.Select(x => new User(x.Id, x.UserName!, x.Email!, x.EmailConfirmed))
                 .ToArrayAsync();
 
             return Ok(users);
@@ -54,7 +56,7 @@ namespace BlazingAuth.Permissions.Sample.Server.Controllers
             if (user is null)
                 return NotFound();
 
-            return Ok(new User(user.Id, user.UserName, user.Email, user.EmailConfirmed));
+            return Ok(new User(user.Id, user.UserName!, user.Email!, user.EmailConfirmed));
         }
 
         // One of the specified permission is needed
@@ -80,7 +82,7 @@ namespace BlazingAuth.Permissions.Sample.Server.Controllers
                 .Where(x => x.ClaimType == BlazingAuthClaims.Permission.Type)
                 .Select(x => x.ClaimValue).ToListAsync();
 
-            permissions.AddRange(userPermissions);
+            permissions.AddRange(userPermissions!);
 
             return Ok(permissions);
         }

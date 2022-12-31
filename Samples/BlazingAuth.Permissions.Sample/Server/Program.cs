@@ -3,10 +3,12 @@ using BlazingAuth.Permissions.Sample.Server;
 using BlazingAuth.Permissions.Sample.Server.Data;
 using BlazingAuth.Permissions.Sample.Server.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using BlazingAuth.Permissions.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 

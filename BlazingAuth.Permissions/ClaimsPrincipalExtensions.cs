@@ -1,54 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace BlazingAuth.Permissions
+namespace BlazingAuth.Permissions;
+
+public static class ClaimsPrincipalExtensions
 {
-    public static class ClaimsPrincipalExtensions
+    public static string? GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
-        public static string? GetUserId(this ClaimsPrincipal claimsPrincipal)
+        return claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+    }
+
+    public static IEnumerable<Claim> GetRoles(this ClaimsPrincipal claimsPrincipal)
+    {
+        return claimsPrincipal.Claims.Where(x => x.Type == ClaimTypes.Role);
+    }
+
+    public static IEnumerable<string> GetRoleNames(this ClaimsPrincipal claimsPrincipal)
+    {
+        return claimsPrincipal.Claims
+            .Where(x => x.Type == ClaimTypes.Role)
+            .Select(x => x.Value);
+    }
+
+    public static IEnumerable<Claim> GetPermissions(this ClaimsPrincipal claimsPrincipal)
+    {
+        return claimsPrincipal.Claims
+            .Where(x => x.Type == BlazingAuthClaims.Permission.Type);
+    }
+
+    public static IEnumerable<string> GetPermissionValues(this ClaimsPrincipal claimsPrincipal)
+    {
+        return claimsPrincipal.Claims
+            .Where(x => x.Type == BlazingAuthClaims.Permission.Type)
+            .Select(x => x.Value);
+    }
+
+    public static bool HasPermissions(this ClaimsPrincipal claimsPrincipal, params string[] andPermissions)
+    {
+        var userPermissions = claimsPrincipal.GetPermissionValues();
+
+        foreach (var neededPermission in andPermissions)
         {
-            return claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (!userPermissions.Contains(neededPermission))
+                return false;
         }
 
-        public static IEnumerable<Claim> GetPermissions(this ClaimsPrincipal claimsPrincipal)
+        return true;
+    }
+
+    public static bool HasAnyPermission(this ClaimsPrincipal claimsPrincipal, params string[] orPermissions)
+    {
+        var permissionClaims = claimsPrincipal.GetPermissions();
+
+        foreach (var permissionClaim in permissionClaims)
         {
-            return claimsPrincipal.Claims
-                .Where(x => x.Type == BlazingAuthClaims.Permission.Type);
+            if (orPermissions.Contains(permissionClaim.Value))
+                return true;
         }
 
-        public static IEnumerable<string> GetPermissionValues(this ClaimsPrincipal claimsPrincipal)
-        {
-            return claimsPrincipal.Claims
-                .Where(x => x.Type == BlazingAuthClaims.Permission.Type)
-                .Select(x => x.Value);
-        }
-
-        public static bool HasPermissions(this ClaimsPrincipal claimsPrincipal, params string[] andPermissions)
-        {
-            var userPermissions = claimsPrincipal.GetPermissionValues();
-
-            foreach (var neededPermission in andPermissions)
-            {
-                if (!userPermissions.Contains(neededPermission))
-                    return false;
-            }
-
-            return true;
-        }
-
-        public static bool HasAnyPermission(this ClaimsPrincipal claimsPrincipal, params string[] orPermissions)
-        {
-            var permissionClaims = claimsPrincipal.GetPermissions();
-
-            foreach (var permissionClaim in permissionClaims)
-            {
-                if (orPermissions.Contains(permissionClaim.Value))
-                    return true;
-            }
-
-            return false;
-        }
+        return false;
     }
 }
