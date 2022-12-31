@@ -709,3 +709,4 @@ FodyWeavers.xsd
 BlazingAuth.Permissions/nuget.config
 BlazingAuth.Permissions.Client/nuget.config
 BlazingAuth.Permissions.Server/nuget.config
+*.sqlite
